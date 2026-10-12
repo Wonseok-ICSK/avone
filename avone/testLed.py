@@ -1,3 +1,4 @@
+# Interactive Jetson BOARD-pin LED test; commands change physical GPIO outputs.
 #LED TEST CODE
 
 import Jetson.GPIO as GPIO

@@ -1,3 +1,4 @@
+# Preview capture-card frames in an OpenCV window and quit with q.
 import cv2
 
 # Replace with your device number, e.g., 0 for /dev/video0, 1 for /dev/video1

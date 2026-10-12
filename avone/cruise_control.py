@@ -1,3 +1,5 @@
+# Interactive ROS cruise-command UI; run curses in a real terminal.
+# The current speed is sampled once when cruise is enabled.
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32, Bool

@@ -1,3 +1,5 @@
+# Detect lane segments inside a fixed image ROI and publish a steering direction.
+# Pixel thresholds and debug image output reflect the original capture layout.
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image

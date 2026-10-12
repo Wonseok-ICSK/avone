@@ -34,14 +34,18 @@ source install/setup.bash
 
 The imported launch file requests an unregistered `vehicle_detector` executable and uses `vehicle_publisher` where the motor node is described. The vehicle subscriber listens on `camera_frame`, unlike the active image publisher. The detector uses an older results access pattern with `ultralytics.YOLO`. Motor initialization creates `self.pwm`, whereas throttle control expects `self.throttle_pwm`; normalization also divides by a target speed initially set to zero.
 
-These issues are preserved in `phase1-original` and are candidates for the second, limited correction pass. Pixel ROIs, GPIO pins, actuator calibration, steering/throttle formulas and detection policy remain application-specific. The curses UI requires a real interactive terminal; a combined launch is not a verified replacement for that terminal.
+These issues are preserved in `phase1-original` and corrected in `phase2-reviewed`; see the focused regression results in REVIEW_CHANGES.md. Pixel ROIs, GPIO pins, actuator calibration, steering/throttle formulas and detection policy remain application-specific. The curses UI requires a real interactive terminal; a combined launch is not a verified replacement for that terminal.
 
 This is a prototype for code review. No connected actuators, camera, ROS graph or GPU inference were exercised during preparation. Review and calibrate the hardware configuration before runtime validation.
+
+## Second-pass update
+
+See [REVIEW_CHANGES.md](REVIEW_CHANGES.md) for the exact corrections, test commands, results and remaining limitations. The current `main` branch contains this update; `phase1-original` preserves the first upload.
 
 ## Review history
 
 - `phase1-original`: the selected source files were imported byte for byte; only repository documentation, dependency lists and Git housekeeping files were added.
-- A subsequent update adds English review comments and narrowly scoped fixes. Compare it with `phase1-original` to review the changes.
+- The `phase2-reviewed` update adds English review comments and narrowly scoped fixes (comments only for the CRC experiment). Compare it with `phase1-original` to review the changes.
 - Original directory names and sample variants are retained. Source extracted from top-level ZIP files is under `archived-examples/` when present.
 - Build outputs, local IDE state, packet captures, datasets, model weights and generated analysis results are excluded. This is a source review repository, not a complete runtime distribution.
 

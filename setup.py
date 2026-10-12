@@ -1,3 +1,4 @@
+# Register the ROS Python package, launch file and six console entry points.
 import os
 from glob import glob
 from setuptools import setup

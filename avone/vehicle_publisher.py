@@ -1,3 +1,5 @@
+# Run Ultralytics inference on a cropped image and publish the first object state.
+# The existing first-detection policy and crop/full-frame coordinate assumptions remain experimental.
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -20,10 +22,10 @@ class VehiclePublisher(Node):
         # cv_bridge 객체 생성
         self.bridge = CvBridge()
 
-        # 'camera_frame' 토픽에서 이미지 구독
+        # Subscribe to the same topic produced by the active ImagePublisher.
         self.subscription = self.create_subscription(
             Image,
-            'camera_frame',
+            'video_frames',
             self.image_callback,
             10
         )
@@ -53,7 +55,8 @@ class VehiclePublisher(Node):
         vehicle_detected = False  # 객체 탐지 여부 플래그
 
         # 탐지된 객체 처리 (클래스 ID 필터링 제거)
-        for result in results.xyxy[0]:
+        # Ultralytics returns one Results object per input image.
+        for result in results[0].boxes.data:
             xmin, ymin, xmax, ymax, conf, cls = result
 
             # 객체의 y좌표 비율을 기준으로 화면 상의 위치를 판단

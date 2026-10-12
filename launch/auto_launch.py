@@ -1,3 +1,5 @@
+# Launch the six executables registered by setup.py.
+# The curses cruise UI still requires interactive-terminal handling at runtime.
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
@@ -30,8 +32,8 @@ def generate_launch_description():
         # 전방 차량 감지 노드
         Node(
             package='avone',
-            executable='vehicle_detector',
-            name='vehicle_detector', 
+            executable='vehicle_publisher',
+            name='vehicle_publisher',
             output='screen'
         ),
         
@@ -43,11 +45,11 @@ def generate_launch_description():
             output='screen'
         ),
         
-        # 모터 제어 노드
+        # Motor control uses its own registered entry point.
         Node(
             package='avone',
-            executable='vehicle_publisher',
-            name='vehicle_publisher', 
+            executable='motor_control',
+            name='motor_control',
             output='screen'
         ),
     ])

@@ -1,3 +1,5 @@
+# Read the fixed speedometer crop with Tesseract and publish integer speed.
+# The crop assumes the original capture resolution and screen layout.
 # todo. Improve accuracy
 
 import rclpy
@@ -29,6 +31,10 @@ class SpeedSubscriber(Node):
         roi = frame[y:y+h, x:x+w]  # 속도계 위치 추출 (적절히 조정 필요)
         
         # 이미지를 그레이스케일로 변환하여 OCR 처리
+        # A smaller capture frame may leave the fixed speedometer ROI empty.
+        if roi.size == 0:
+            self.get_logger().warn("Speedometer ROI is outside the captured frame")
+            return
         gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
         #cv2.imshow('window', frame)
         speed_text = pytesseract.image_to_string(gray, config='--psm 7')  # OCR로 숫자 추출

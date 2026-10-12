@@ -1,3 +1,5 @@
+# Consume ROS cruise, speed, steering and object-state commands to drive PWM.
+# GPIO mappings and control gains require target-specific calibration.
 import Jetson.GPIO as GPIO
 from std_msgs.msg import Int32, String, Bool
 import rclpy
@@ -24,8 +26,8 @@ class MotorControl(Node):
         # 수정해야할 코드. 처음 GPIO 세팅
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(18, GPIO.OUT)  # 스로틀 제어 PWM 핀 설정
-        self.pwm = GPIO.PWM(18, 100)
-        self.pwm.start(0)
+        self.throttle_pwm = GPIO.PWM(18, 100)
+        self.throttle_pwm.start(0)
 
         GPIO.setup(19, GPIO.OUT)  # 브레이크 제어 PWM 핀 설정
         self.brake_pwm = GPIO.PWM(19, 100)
@@ -52,6 +54,9 @@ class MotorControl(Node):
 
     def calculate_throttle(self, speed_diff):
         """속도 차이를 기반으로 스로틀 개도량 계산"""
+        # The target starts at zero and may be reduced to zero by the UI.
+        if self.target_speed <= 0:
+            return 0.0
         max_throttle = 100
         normalized_diff = min(max(speed_diff / self.target_speed, -1), 1)  # 속도 차이 정규화
         throttle_value = max_throttle * (0.5 * (math.tanh(normalized_diff) + 1))  # tanh로 자연스러운 가속 제어
@@ -126,6 +131,7 @@ def main(args=None):
     finally:
         motor_control.throttle_pwm.stop()
         motor_control.brake_pwm.stop()
+        motor_control.steer_pwm.stop()
         GPIO.cleanup()
         rclpy.shutdown()
 

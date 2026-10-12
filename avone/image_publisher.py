@@ -1,3 +1,6 @@
+# Publish live capture-card images on video_frames.
+# The leading triple-quoted block is an inactive recorded-video experiment.
+# The active 0.2-second timer requests five callbacks per second.
 
 """
 # Test code, using video img to lauch programs
