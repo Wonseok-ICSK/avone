@@ -1,0 +1,83 @@
+This is instruction method.
+
+1. Check the Ubuntu(JetPack) version
+ cat /etc/nv_tegra_release
+ lsb_release -a
+
+2. install ROS2 (if we can't install due to ubuntu version, then install ROS)
+ sudo apt update
+ sudo apt upgrade
+
+ sudo apt install locales
+ sudo locale-gen en_US en_US.UTF-8
+ sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+ export LANG=en_US.UTF-8
+
+ sudo apt install curl gnupg2 lsb-release
+ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+ sudo sh -c 'echo "deb [trusted=yes] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+ 
+ sudo apt update
+ sudo apt install ros-foxy-desktop
+
+ echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc
+ source ~/.bashrc
+
+ sudo apt install python3-colcon-common-extensions
+
+ 
+
+2-1. make workspace
+
+ mkdir -p ~/ros2_ws/src
+ cd ~/ros2_ws
+ colcon build
+ source install/setup.bash
+
+
+3. install GPIO library
+ sudo pip3 install Jetson.GPIO (if no pip, sudo apt-get install python3-pip)
+
+
+4. install pytesseract
+ sudo apt install tesseract-ocr
+
+
+
+
+
+
+
+
+ 
+
+구조
+
+your_workspace/                          # ROS2 워크스페이스 루트
+├── src/                                 # ROS2 패키지가 위치하는 곳
+│   └── your_package_name/               # ROS2 패키지 이름
+│       ├── launch/                      # 런치 파일을 넣는 디렉토리
+│       │   └── auto_drive.launch.py     # 모든 노드를 실행하는 런치 파일
+│       ├── src/                         # 파이썬 소스 코드들이 있는 디렉토리
+│       │   ├── image_publisher.py       # 캡처카드 영상 퍼블리싱 노드
+│       │   ├── speed_publisher.py       # 속도 인식 노드
+│       │   ├── lane_detector.py         # 차선 이탈 감지 노드
+│       │   ├── cruise_control.py        # 크루즈 컨트롤 On/Off 및 TragetSpd 설정
+│       │   ├── motor_control.py         # 가장 중심. 기존의 값을 받아서 차량의 제어값 생성 및 pwm으로 모터 제어
+│       │   └── vehicle_publisher.py     # 전방 차량 감지 노드 (아직 구현되지 않음)
+│       ├── CMakeLists.txt               # 패키지의 빌드 설정 파일
+│       └── package.xml                  # 패키지의 의존성 및 메타데이터 파일
+├── build/                               # ROS2가 빌드 후 생성하는 파일 (빌드 후 생성됨)
+├── install/                             # ROS2가 설치 후 생성하는 파일 (빌드 후 생성됨)
+└── log/                                 # ROS2 로그 파일 (실행 후 생성됨)
+
+
+Topic List
+
+spd:            std_msgs/msg/Int32      현재 속도{단위 1kph}
+target_speed:   std_msgs/msg/Int32      목표 속도{단위 5kph}
+steerCmd:       std_msgs/msg/String     조향 방향 결정 (left, center, right)
+cruiseCmd:      std_msgs/msg/Bool       현재 상태 (True, False)
+speedCmd:       std_msgs/msg/Int32      어디 쓰는거지..? 이것도 아마 안쓰는 토픽일 듯
+frontVeh:       std_msgs/msg/String     전방의 차량 유무 (None - 없음, Neutral - 멂, Brake - 가까움)

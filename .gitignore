@@ -1,0 +1,43 @@
+# Local environments and editor state
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.vs/
+.idea/
+.claude/
+.codex/
+.env
+.env.*
+*.user
+*.suo
+# Build outputs
+build/
+build_old/
+dist/
+Debug/
+Release/
+x64/
+x86/
+obj/
+bin/
+install/
+log/
+*.exe
+*.dll
+*.pdb
+*.obj
+*.o
+*.so
+*.a
+*.lib
+*.ilk
+*.exp
+# Runtime output and data stay outside this source review repository.
+*.blf
+*.pcap
+*.pcapng
+*.csv
+*.pt
+lane_frame_*.jpg
+frame_*.jpg

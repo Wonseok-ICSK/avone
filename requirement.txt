@@ -1,0 +1,9 @@
+# Python packages only. ROS 2 and system Tesseract are installed separately.
+# Use versions/builds compatible with the Jetson image, CUDA, PyTorch and cv_bridge.
+setuptools
+numpy
+opencv-python
+pytesseract
+ultralytics
+Jetson.GPIO; platform_system == "Linux" and platform_machine == "aarch64"
+# ROS lint tests additionally need pytest and the ament_* tools from ROS.

@@ -1,0 +1,2 @@
+# Preserve the imported source bytes, including original line endings.
+* -text
